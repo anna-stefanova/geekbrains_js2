@@ -9,7 +9,7 @@ class List {
         this.items.push(...goods);
         this.render();
 
-        new Button('Купить');
+        new BtnBuy('Купить', 'btnBuy');
     }
 
     fetchGoods () {
@@ -45,8 +45,8 @@ class Cart {
         });
         this.items.push(...goods);
         this.render();
-        new BtnMinus('-');
-        new BtnPlus('+');
+        new BtnMinus('-', 'minus');
+        new BtnPlus('+', 'plus');
 
     }
 
@@ -151,8 +151,6 @@ class GoodItem {
             price.innerHTML = `${this.price}`;
             description.append(price);
 
-
-
         }
 
     }
@@ -163,9 +161,34 @@ let listGoods = [];
 
 class Button {
     text = '';
-
-    constructor(text) {
+    constructor(text, classBtn) {
         this.text = text;
+        this.classBtn = classBtn;
+    }
+
+    render () {
+        let placeToRender = document.querySelectorAll('.cart__item');
+        if (placeToRender) {
+
+            placeToRender.forEach((elem) => {
+                let id = elem.getAttribute('id');
+                let amount = elem.querySelector('.amount')
+                let input = amount.querySelector('.amountGood');
+                const btn = document.createElement('button');
+                btn.classList.add(this.classBtn);
+                btn.innerHTML = this.text;
+                amount.append(btn);
+                btn.addEventListener('click', () => {
+                    this.btnOnClick(id, input);
+                });
+            })
+        }
+    }
+}
+
+class BtnBuy extends Button {
+    constructor(text, classBtn) {
+        super(text, classBtn);
         this.render();
     }
 
@@ -194,6 +217,8 @@ class Button {
         }
 
 
+
+
     }
 
     render () {
@@ -202,7 +227,7 @@ class Button {
             placeToRender.forEach((elem) => {
                 let id = elem.getAttribute('id');
                 const btn = document.createElement('button');
-                btn.classList.add('btnBuy');
+                btn.classList.add(this.classBtn);
                 btn.innerHTML = this.text;
                 elem.append(btn);
                 btn.addEventListener('click', () => {
@@ -214,11 +239,10 @@ class Button {
 }
 new List();
 
-class BtnMinus {
-    text = '';
+class BtnMinus extends Button {
 
-    constructor(text) {
-        this.text = text;
+    constructor(text, classBtn) {
+        super(text, classBtn);
         this.render();
     }
 
@@ -236,31 +260,15 @@ class BtnMinus {
 
     }
 
-    render () {
-        let placeToRender = document.querySelectorAll('.cart__item');
-        if (placeToRender) {
-
-            placeToRender.forEach((elem) => {
-                let id = elem.getAttribute('id');
-                let amount = elem.querySelector('.amount')
-                let input = amount.querySelector('.amountGood');
-                const btn = document.createElement('button');
-                btn.classList.add('minus');
-                btn.innerHTML = this.text;
-                amount.prepend(btn);
-                btn.addEventListener('click', () => {
-                    this.btnOnClick(id, input);
-                });
-            })
-        }
+    render() {
+        super.render();
     }
 }
 
-class BtnPlus {
-    text = '';
+class BtnPlus extends Button {
 
-    constructor(text) {
-        this.text = text;
+    constructor(text, classBtn) {
+        super(text, classBtn);
         this.render();
     }
 
@@ -273,22 +281,8 @@ class BtnPlus {
         });
     }
 
-    render () {
-        let placeToRender = document.querySelectorAll('.cart__item');
-        if (placeToRender) {
-            placeToRender.forEach((elem) => {
-                let id = elem.getAttribute('id');
-                let amount = elem.querySelector('.amount');
-                let input = amount.querySelector('.amountGood');
-                const btn = document.createElement('button');
-                btn.classList.add('plus');
-                btn.innerHTML = this.text;
-                amount.append(btn);
-                btn.addEventListener('click', () => {
-                    this.btnOnClick(id, input);
-                });
-            })
-        }
+    render() {
+        super.render();
     }
 }
 
