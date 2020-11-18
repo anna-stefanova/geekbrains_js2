@@ -39,7 +39,6 @@ class Cart {
 
     constructor() {
         let goods = this.fetchGoods();
-        console.log(goods);
         goods = goods.map(cur => {
             return new CartItem(cur);
         });
@@ -47,11 +46,13 @@ class Cart {
         this.render();
         new BtnMinus('-', 'minus');
         new BtnPlus('+', 'plus');
+        let blockResult = document.querySelector('.resultAmount');
+        if (blockResult) blockResult.remove();
+        new BlockResult();
 
     }
 
     fetchGoods () {
-
         return listGoods;
     }
 
@@ -61,6 +62,8 @@ class Cart {
             good.render();
         })
     }
+
+
 }
 
 class CartItem {
@@ -77,6 +80,7 @@ class CartItem {
     }
 
     render () {
+
         const placeToRender = document.querySelector('.contentCart');
 
         if (placeToRender) {
@@ -95,10 +99,10 @@ class CartItem {
             title.innerHTML = `${this.name}`;
             description.append(title);
 
-            const price = document.createElement('p');
+            const price = document.createElement('div');
             price.classList.add('cart__item__price');
-            price.innerHTML = `${this.price}$`;
-            description.append(price);
+            price.innerHTML = `${this.price}`;
+            block.append(price);
 
             const amount = document.createElement('div');
             amount.classList.add('amount');
@@ -107,7 +111,10 @@ class CartItem {
             const inputAmount = document.createElement('input');
             inputAmount.classList.add('amountGood');
             inputAmount.value = String(this.count);
+            inputAmount.size = 3;
             amount.append(inputAmount);
+
+
 
         }
     }
@@ -286,8 +293,27 @@ class BtnPlus extends Button {
     }
 }
 
-class BtnDelete {
+class BlockResult {
+    constructor() {
+        this.render();
+    }
 
+    render () {
+
+        const blockCart = document.querySelector('.modal_content.cart');
+        const placeToRender = blockCart.querySelectorAll('.cart__item');
+        let result = 0;
+        placeToRender.forEach((block) => {
+            let amount = block.querySelector('.amountGood').value;
+            let price = block.querySelector('.cart__item__price').innerHTML;
+            result = result + amount * price;
+        });
+        let divResult = document.createElement('div');
+        divResult.classList.add('resultAmount');
+        divResult.innerHTML = `<p>Итого</p><p>${result}</p>`;
+        blockCart.append(divResult);
+
+    }
 }
 
 

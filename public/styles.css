@@ -91,6 +91,14 @@ li>a {
     margin: 15px 0;
 }
 
+.price {
+    margin-top: 5px;
+    font-size: 24px;
+    font-weight: 400;
+    font-style: italic;
+    color: #ff0000;
+}
+
 .btnBuy {
     cursor: pointer;
     background: #9D1813;
@@ -142,9 +150,14 @@ li>a {
 .modal_body {
     min-height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 30px 10px;
+}
+
+.close {
+    text-align: end;
 }
 
 .modal_content {
@@ -157,36 +170,73 @@ li>a {
 
 }
 
-h2 {
+.headerCart h2 {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 35px;
     width: 250px;
-    margin: 20px auto 0;
+    margin: 0 auto;
     text-align: center;
     color: #13989D;
 }
 
-.form {
-    width: 250px;
-    background-color: #edeff2;
-    border-radius: 4px;
-    padding: 30px;
-    margin: 0 auto;
+.close {
+    margin-top: 10px;
+    margin-right: 15px;
+    font-weight: 700;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.cart__item {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+
 }
 
-.form>* {
-    width: 100%;
+.cart__item__description {
+    display: flex;
+    flex-direction: row;
+}
+
+.resultAmount {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 45px 45px;
+    border-top: 1px solid black;
+}
+
+.resultAmount p {
+    margin-top: 10px;
+}
+
+.cart__item {
+    margin: 10px 45px 10px 45px;
+}
+
+.amountGood {
+    height: 20px;
+}
+
+.minus, .plus {
+
+    margin-top: 1px;
+    background-color: #9D1813;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 18px;
+    height: 25px;
+    width: 25px;
+    outline: none;
     box-sizing: border-box;
-    margin: 5px 0;
-    font-size: 0.9em;
+    border-top: 1px solid #99a8bf;
+    border-left: 1px dotted #99a8bf;
+    border-bottom: 1px solid #99a8bf;
+    cursor: pointer;
 }
 
-.form>input {
-    height: 30px;
+.cart__item__price {
+    margin-top: 5px;
 }
-
-
