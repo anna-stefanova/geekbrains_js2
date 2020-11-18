@@ -46,6 +46,7 @@ class Cart {
         this.render();
         new BtnMinus('-', 'minus');
         new BtnPlus('+', 'plus');
+        new BtnDelete('x', 'delete')
         let blockResult = document.querySelector('.resultAmount');
         if (blockResult) blockResult.remove();
         new BlockResult();
@@ -82,11 +83,10 @@ class CartItem {
     render () {
 
         const placeToRender = document.querySelector('.contentCart');
-
         if (placeToRender) {
             const block = document.createElement('div');
             block.classList.add('cart__item');
-            block.setAttribute('id', this.id);
+            block.setAttribute('id', `0${this.id}`);
             placeToRender.append(block);
 
             const description = document.createElement('div');
@@ -173,6 +173,12 @@ class Button {
         this.classBtn = classBtn;
     }
 
+    btnOnClick () {
+        let result = calculateAmount();
+        let divResult = document.querySelector('.res');
+        divResult.innerHTML = result;
+    }
+
     render () {
         let placeToRender = document.querySelectorAll('.cart__item');
         if (placeToRender) {
@@ -222,10 +228,6 @@ class BtnBuy extends Button {
         if (listGoods.length === 0) {
             listGoods.push(cartItem);
         }
-
-
-
-
     }
 
     render () {
@@ -257,14 +259,17 @@ class BtnMinus extends Button {
         if (input.value > 0) {
             input.value--;
         }
-        if (input.value === 0) {
+        if (input.value === '0') {
+            let goodItem = document.getElementById(id);
+            if (goodItem) goodItem.remove();
         }
+        super.btnOnClick();
+
         listGoods.forEach((obj) => {
-            if (id === obj.id) {
+            if (id === '0' + obj.id) {
                 obj.count = input.value;
             }
         });
-
     }
 
     render() {
@@ -281,11 +286,39 @@ class BtnPlus extends Button {
 
     btnOnClick (id, input) {
         input.value++;
+
+        super.btnOnClick();
+
         listGoods.forEach((obj) => {
-            if (id === obj.id) {
+            if (id === '0' + obj.id) {
                 obj.count = input.value;
             }
         });
+    }
+
+    render() {
+        super.render();
+    }
+}
+
+class BtnDelete extends Button {
+    constructor(text, classBtn) {
+        super(text, classBtn);
+        this.render();
+    }
+
+
+    btnOnClick (id, input) {
+        let goodItem = document.getElementById(id);
+        if (goodItem) goodItem.remove();
+        input.value = 0;
+        listGoods.forEach((obj) => {
+            if (id === ('0' + obj.id)) {
+                obj.count = input.value;
+            }
+        });
+        super.btnOnClick();
+        console.log(listGoods);
     }
 
     render() {
@@ -299,24 +332,26 @@ class BlockResult {
     }
 
     render () {
-
         const blockCart = document.querySelector('.modal_content.cart');
-        const placeToRender = blockCart.querySelectorAll('.cart__item');
-        let result = 0;
-        placeToRender.forEach((block) => {
-            let amount = block.querySelector('.amountGood').value;
-            let price = block.querySelector('.cart__item__price').innerHTML;
-            result = result + amount * price;
-        });
+        let result = calculateAmount();
         let divResult = document.createElement('div');
         divResult.classList.add('resultAmount');
-        divResult.innerHTML = `<p>Итого</p><p>${result}</p>`;
+        divResult.innerHTML = `<p>Итого</p><p class="res">${result}</p>`;
         blockCart.append(divResult);
-
     }
 }
 
-
+const calculateAmount = () => {
+    const blockCart = document.querySelector('.modal_content.cart');
+    const placeToRender = blockCart.querySelectorAll('.cart__item');
+    let result = 0;
+    placeToRender.forEach((block) => {
+        let amount = block.querySelector('.amountGood').value;
+        let price = block.querySelector('.cart__item__price').innerHTML;
+        result = result + amount * price;
+    });
+    return result;
+}
 
 
 let cart = document.querySelector('.hrefCart');

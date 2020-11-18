@@ -220,7 +220,7 @@ li>a {
     height: 20px;
 }
 
-.minus, .plus {
+.minus, .plus, .delete {
 
     margin-top: 1px;
     background-color: #9D1813;
