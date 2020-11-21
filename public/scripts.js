@@ -2,26 +2,26 @@ class List {
     items = [];
 
     constructor() {
-        let goods = this.fetchGoods();
-        goods = goods.map((cur, index) => {
-           return new GoodItem(cur, index);
-        });
-        this.items.push(...goods);
-        this.render();
-
-        new BtnBuy('Купить', 'btnBuy');
+        let goodsPromise = this.fetchGoods();
+        goodsPromise.then(() => {
+            this.render();
+            new BtnBuy('Купить', 'btnBuy');
+        })
     }
 
     fetchGoods () {
+        const result = fetch('http://localhost:3000/database.json');
+        return result
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                console.log(data);
+                this.items = data.data.map((cur, index) => {
+                    return new GoodItem(cur, index);
+                });
+            })
 
-
-
-        return [
-            { name: 'Shirt', price: 150 },
-            { name: 'Socks', price: 15 },
-            { name: 'Jacket', price: 50 },
-            { name: 'Shoes', price: 1500}
-        ]
     }
 
     render () {
@@ -35,9 +35,10 @@ class List {
 
 class Cart {
     items = [];
-
+    listGoods = [];
 
     constructor() {
+        this.listGoods = listGoods;
         let goods = this.fetchGoods();
         goods = goods.map(cur => {
             return new CartItem(cur);
@@ -53,18 +54,17 @@ class Cart {
 
     }
 
-    fetchGoods () {
-        return listGoods;
-    }
 
+    fetchGoods () {
+        this.listGoods = this.listGoods.filter(obj => obj.count > 0);
+        return this.listGoods;
+    }
 
     render () {
         this.items.forEach((good) => {
             good.render();
         })
     }
-
-
 }
 
 class CartItem {
@@ -113,9 +113,6 @@ class CartItem {
             inputAmount.value = String(this.count);
             inputAmount.size = 3;
             amount.append(inputAmount);
-
-
-
         }
     }
 }
@@ -167,8 +164,10 @@ class GoodItem {
 let listGoods = [];
 
 class Button {
+    listGoods = [];
     text = '';
     constructor(text, classBtn) {
+        this.listGoods = listGoods;
         this.text = text;
         this.classBtn = classBtn;
     }
@@ -200,8 +199,11 @@ class Button {
 }
 
 class BtnBuy extends Button {
+    cartList = [];
+
     constructor(text, classBtn) {
         super(text, classBtn);
+        this.cartList = listGoods;
         this.render();
     }
 
@@ -215,18 +217,18 @@ class BtnBuy extends Button {
         let cartItem = { id, name, price, count };
 
 
-        if (listGoods.length) {
+        if (this.cartList.length) {
             let res = [];
-            listGoods.forEach((obj) => {
+            this.cartList.forEach((obj) => {
                 if (id === obj.id) {
                     obj.count++;
                     res.push(true);
                 } else res.push(false);
             });
-            if (!res.includes(true)) listGoods.push(cartItem);
+            if (!res.includes(true)) this.cartList.push(cartItem);
         }
-        if (listGoods.length === 0) {
-            listGoods.push(cartItem);
+        if (this.cartList.length === 0) {
+            this.cartList.push(cartItem);
         }
     }
 
@@ -249,9 +251,11 @@ class BtnBuy extends Button {
 new List();
 
 class BtnMinus extends Button {
+    cartList = [];
 
     constructor(text, classBtn) {
         super(text, classBtn);
+        this.cartList = listGoods;
         this.render();
     }
 
@@ -265,7 +269,7 @@ class BtnMinus extends Button {
         }
         super.btnOnClick();
 
-        listGoods.forEach((obj) => {
+        this.cartList.forEach((obj) => {
             if (id === '0' + obj.id) {
                 obj.count = input.value;
             }
@@ -278,9 +282,11 @@ class BtnMinus extends Button {
 }
 
 class BtnPlus extends Button {
+    cartList = [];
 
     constructor(text, classBtn) {
         super(text, classBtn);
+        this.cartList = listGoods;
         this.render();
     }
 
@@ -289,7 +295,7 @@ class BtnPlus extends Button {
 
         super.btnOnClick();
 
-        listGoods.forEach((obj) => {
+        this.cartList.forEach((obj) => {
             if (id === '0' + obj.id) {
                 obj.count = input.value;
             }
@@ -302,8 +308,10 @@ class BtnPlus extends Button {
 }
 
 class BtnDelete extends Button {
+    cartList = [];
     constructor(text, classBtn) {
         super(text, classBtn);
+        this.cartList = listGoods;
         this.render();
     }
 
@@ -312,13 +320,13 @@ class BtnDelete extends Button {
         let goodItem = document.getElementById(id);
         if (goodItem) goodItem.remove();
         input.value = 0;
-        listGoods.forEach((obj) => {
+        this.cartList.forEach((obj) => {
             if (id === ('0' + obj.id)) {
                 obj.count = input.value;
             }
         });
         super.btnOnClick();
-        console.log(listGoods);
+        console.log(this.cartList);
     }
 
     render() {
