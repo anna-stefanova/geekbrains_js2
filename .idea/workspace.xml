@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="96214617-a95c-4373-8e1a-db216da2abb4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/database.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -83,7 +83,7 @@
       <workItem from="1605539657889" duration="2085000" />
       <workItem from="1605542377690" duration="3337000" />
       <workItem from="1605596892946" duration="39968000" />
-      <workItem from="1605976233757" duration="7266000" />
+      <workItem from="1605976233757" duration="22924000" />
     </task>
     <servers />
   </component>
@@ -163,6 +163,10 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="800" y="186" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1605039732436" />
+    <state x="746" y="464" width="303" height="178" key="VCS.ChangelistChooser" timestamp="1606082374135">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="746" y="464" width="303" height="178" key="VCS.ChangelistChooser/72.27.1848.1053@72.27.1848.1053" timestamp="1606082374135" />
     <state x="608" y="253" key="run.anything.popup" timestamp="1605536086193">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>

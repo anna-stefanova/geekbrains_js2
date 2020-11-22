@@ -1,3 +1,5 @@
+let listGoods = [];
+
 class List {
     items = [];
 
@@ -5,7 +7,7 @@ class List {
         let goodsPromise = this.fetchGoods();
         goodsPromise.then(() => {
             this.render();
-            new BtnBuy('Купить', 'btnBuy');
+
         })
     }
 
@@ -35,43 +37,67 @@ class List {
 
 class Cart {
     items = [];
-    listGoods = [];
+    cartList = [];
 
     constructor() {
-        this.listGoods = listGoods;
-        let goods = this.fetchGoods();
-        goods = goods.map(cur => {
-            return new CartItem(cur);
-        });
-        this.items.push(...goods);
-        this.render();
-        new BtnMinus('-', 'minus');
-        new BtnPlus('+', 'plus');
-        new BtnDelete('x', 'delete')
-        let blockResult = document.querySelector('.resultAmount');
-        if (blockResult) blockResult.remove();
-        new BlockResult();
+        this.init();
+    }
 
+    init () {
+
+        let cart = document.querySelector('.hrefCart');
+        cart.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            let cartList = document.querySelector('.modal.cart');
+            cartList.classList.add('open');
+            let contentCart = document.querySelector('.contentCart');
+            contentCart.innerHTML = '';
+
+            let goods = this.fetchGoods();
+            goods = goods.map(cur => {
+                return new CartItem(cur);
+            });
+            this.items = goods;
+            this.render();
+
+            let blockResult = document.querySelector('.resultAmount');
+            if (blockResult) blockResult.remove();
+            new BlockResult();
+
+            let closeBtn = document.querySelector('.close');
+            closeBtn.addEventListener('click', () => {
+                cartList.classList.remove('open');
+            });
+        });
     }
 
 
+
+
     fetchGoods () {
-        this.listGoods = this.listGoods.filter(obj => obj.count > 0);
-        return this.listGoods;
+        this.cartList = listGoods;
+
+        this.cartList = this.cartList.filter(obj => obj.count > 0);
+
+        return this.cartList;
     }
 
     render () {
         this.items.forEach((good) => {
             good.render();
-        })
+        });
+
     }
 }
+
+new Cart();
 
 class CartItem {
     id = '';
     name = '';
     price = 0;
-    count = 0;
+
 
     constructor({ id, name, price, count }) {
         this.id = id;
@@ -81,38 +107,34 @@ class CartItem {
     }
 
     render () {
-
         const placeToRender = document.querySelector('.contentCart');
         if (placeToRender) {
             const block = document.createElement('div');
             block.classList.add('cart__item');
             block.setAttribute('id', `0${this.id}`);
+            block.innerHTML = `
+                <h3 class="cart__item__title">${this.name}</h3>
+                <div class="cart__item__price">${this.price}</div>
+                <div class="amount"></div>
+            `;
             placeToRender.append(block);
-
-            const description = document.createElement('div');
-            description.classList.add('cart__item__description');
-            block.append(description);
-
-
-            const title = document.createElement('h3');
-            title.classList.add('cart__item__title');
-            title.innerHTML = `${this.name}`;
-            description.append(title);
-
-            const price = document.createElement('div');
-            price.classList.add('cart__item__price');
-            price.innerHTML = `${this.price}`;
-            block.append(price);
-
-            const amount = document.createElement('div');
-            amount.classList.add('amount');
-            block.append(amount);
-
+            const amount = block.querySelector('.amount');
             const inputAmount = document.createElement('input');
             inputAmount.classList.add('amountGood');
+
             inputAmount.value = String(this.count);
+
             inputAmount.size = 3;
             amount.append(inputAmount);
+
+            const AddBtnMinus = new BtnMinus('-', 'minus', `0${this.id}`, inputAmount);
+            amount.append(AddBtnMinus.render());
+
+            const AddBtnPlus = new BtnPlus('+', 'plus', `0${this.id}`, inputAmount);
+            amount.append(AddBtnPlus.render());
+
+            const AddBtnDelete = new BtnDelete('x', 'delete', `0${this.id}`, inputAmount);
+            amount.append(AddBtnDelete.render());
         }
     }
 }
@@ -134,77 +156,132 @@ class GoodItem {
             const block = document.createElement('div');
             block.classList.add('goods__item');
             block.setAttribute('id', this.id);
+            block.innerHTML = `
+            <img src="img/no-image.jpg" alt="">
+            <div class="description">
+                <h3 class="title">${this.name}</h3>
+                <p class="price">${this.price}</p>
+            </div>
+            `;
             placeToRender.append(block);
 
-            const img = document.createElement('img');
-            img.src = 'img/no-image.jpg';
-            block.append(img);
-
-            const description = document.createElement('div');
-            description.classList.add('description');
-            block.append(description);
-
-
-            const title = document.createElement('h3');
-            title.classList.add('title');
-            title.innerHTML = `${this.name}`;
-            description.prepend(title);
-
-            const price = document.createElement('p');
-            price.classList.add('price');
-            price.innerHTML = `${this.price}`;
-            description.append(price);
-
+            const AddBtnBuy = new BtnBuy('Купить', 'btnBuy', this.id);
+            block.append(AddBtnBuy.render());
         }
 
     }
 }
 
 
-let listGoods = [];
-
 class Button {
-    listGoods = [];
     text = '';
-    constructor(text, classBtn) {
-        this.listGoods = listGoods;
+    cartList = [];
+    classBtn = '';
+    input = '';
+    id = '';
+
+    constructor(text, classBtn, id, input) {
+        this.cartList = listGoods;
         this.text = text;
         this.classBtn = classBtn;
+        this.id = id;
+        this.input = input;
     }
 
     btnOnClick () {
+
         let result = calculateAmount();
         let divResult = document.querySelector('.res');
         divResult.innerHTML = result;
     }
 
     render () {
-        let placeToRender = document.querySelectorAll('.cart__item');
-        if (placeToRender) {
+        let btn = document.createElement('button');
+        btn.classList.add(this.classBtn);
+        btn.innerHTML = this.text;
+        btn.addEventListener('click', () => {
+            this.btnOnClick(this.id, this.input);
+        });
+        return btn;
+    }
+}
 
-            placeToRender.forEach((elem) => {
-                let id = elem.getAttribute('id');
-                let amount = elem.querySelector('.amount')
-                let input = amount.querySelector('.amountGood');
-                const btn = document.createElement('button');
-                btn.classList.add(this.classBtn);
-                btn.innerHTML = this.text;
-                amount.append(btn);
-                btn.addEventListener('click', () => {
-                    this.btnOnClick(id, input);
-                });
-            })
+class BtnMinus extends Button {
+    constructor(text, classBtn, id, input) {
+        super(text, classBtn, id, input);
+    }
+
+    btnOnClick (id, input) {
+        if (input.value > 0) {
+            input.value--;
         }
+        if (input.value === '0') {
+            let goodItem = document.getElementById(id);
+            if (goodItem) goodItem.remove();
+        }
+
+        this.cartList.forEach((obj) => {
+            if (id === ('0' + obj.id)) {
+                obj.count = input.value;
+            }
+        });
+
+        return super.btnOnClick();
+    }
+
+    render () {
+        return super.render();
+    }
+}
+
+class BtnPlus extends Button {
+    constructor(text, classBtn, id, input) {
+        super(text, classBtn, id, input);
+    }
+
+    btnOnClick (id, input) {
+        input.value++;
+        this.cartList.forEach((obj) => {
+            if (id === ('0' + obj.id)) {
+                obj.count = input.value;
+            }
+        });
+        return super.btnOnClick();
+    }
+
+    render () {
+        return super.render();
+    }
+}
+
+class BtnDelete extends Button {
+    constructor(text, classBtn, id, input) {
+        super(text, classBtn, id, input);
+    }
+
+    btnOnClick (id, input) {
+        let goodItem = document.getElementById(id);
+        if (goodItem) goodItem.remove();
+        input.value = 0;
+
+        this.cartList.forEach((obj) => {
+            if (id === ('0' + obj.id)) {
+                obj.count = input.value;
+            }
+        });
+        return super.btnOnClick();
+    }
+
+    render() {
+        return super.render();
     }
 }
 
 class BtnBuy extends Button {
-    cartList = [];
 
-    constructor(text, classBtn) {
+    constructor(text, classBtn, id) {
         super(text, classBtn);
-        this.cartList = listGoods;
-        this.render();
+        this.id = id;
     }
 
     btnOnClick (id) {
@@ -215,7 +292,6 @@ class BtnBuy extends Button {
         price = price.innerHTML;
         let count = '1';
         let cartItem = { id, name, price, count };
-
 
         if (this.cartList.length) {
             let res = [];
@@ -233,106 +309,16 @@ class BtnBuy extends Button {
     }
 
     render () {
-        let placeToRender = document.querySelectorAll('.goods__item');
-        if (placeToRender) {
-            placeToRender.forEach((elem) => {
-                let id = elem.getAttribute('id');
-                const btn = document.createElement('button');
-                btn.classList.add(this.classBtn);
-                btn.innerHTML = this.text;
-                elem.append(btn);
-                btn.addEventListener('click', () => {
-                    this.btnOnClick(id);
-                });
-            })
-        }
+        return super.render();
     }
 }
 new List();
 
-class BtnMinus extends Button {
-    cartList = [];
-
-    constructor(text, classBtn) {
-        super(text, classBtn);
-        this.cartList = listGoods;
-        this.render();
-    }
-
-    btnOnClick (id, input) {
-        if (input.value > 0) {
-            input.value--;
-        }
-        if (input.value === '0') {
-            let goodItem = document.getElementById(id);
-            if (goodItem) goodItem.remove();
-        }
-        super.btnOnClick();
-
-        this.cartList.forEach((obj) => {
-            if (id === '0' + obj.id) {
-                obj.count = input.value;
-            }
-        });
-    }
-
-    render() {
-        super.render();
-    }
-}
-
-class BtnPlus extends Button {
-    cartList = [];
-
-    constructor(text, classBtn) {
-        super(text, classBtn);
-        this.cartList = listGoods;
-        this.render();
-    }
-
-    btnOnClick (id, input) {
-        input.value++;
-
-        super.btnOnClick();
-
-        this.cartList.forEach((obj) => {
-            if (id === '0' + obj.id) {
-                obj.count = input.value;
-            }
-        });
-    }
-
-    render() {
-        super.render();
-    }
-}
-
-class BtnDelete extends Button {
-    cartList = [];
-    constructor(text, classBtn) {
-        super(text, classBtn);
-        this.cartList = listGoods;
-        this.render();
-    }
 
 
-    btnOnClick (id, input) {
-        let goodItem = document.getElementById(id);
-        if (goodItem) goodItem.remove();
-        input.value = 0;
-        this.cartList.forEach((obj) => {
-            if (id === ('0' + obj.id)) {
-                obj.count = input.value;
-            }
-        });
-        super.btnOnClick();
-        console.log(this.cartList);
-    }
 
-    render() {
-        super.render();
-    }
-}
+
+
 
 class BlockResult {
     constructor() {
@@ -362,16 +348,4 @@ const calculateAmount = () => {
 }
 
 
-let cart = document.querySelector('.hrefCart');
-cart.addEventListener('click', (event) => {
-    event.preventDefault();
-    let cartList = document.querySelector('.modal.cart');
-    cartList.classList.add('open');
-    let contentCart = document.querySelector('.contentCart');
-    contentCart.innerHTML = '';
-    new Cart();
-    let closeBtn = document.querySelector('.close');
-    closeBtn.addEventListener('click', () => {
-        cartList.classList.remove('open');
-    })
-});
+
