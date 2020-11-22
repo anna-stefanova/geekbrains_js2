@@ -18,12 +18,10 @@ class List {
                 return res.json();
             })
             .then(data => {
-                console.log(data);
                 this.items = data.data.map((cur, index) => {
                     return new GoodItem(cur, index);
                 });
             })
-
     }
 
     render () {
@@ -107,6 +105,7 @@ class CartItem {
     }
 
     render () {
+
         const placeToRender = document.querySelector('.contentCart');
         if (placeToRender) {
             const block = document.createElement('div');
@@ -118,12 +117,11 @@ class CartItem {
                 <div class="amount"></div>
             `;
             placeToRender.append(block);
+
             const amount = block.querySelector('.amount');
             const inputAmount = document.createElement('input');
             inputAmount.classList.add('amountGood');
-
             inputAmount.value = String(this.count);
-
             inputAmount.size = 3;
             amount.append(inputAmount);
 
@@ -150,24 +148,28 @@ class GoodItem {
     }
 
     render () {
-        const placeToRender = document.querySelector('.goods');
 
-        if (placeToRender) {
-            const block = document.createElement('div');
-            block.classList.add('goods__item');
-            block.setAttribute('id', this.id);
-            block.innerHTML = `
-            <img src="img/no-image.jpg" alt="">
-            <div class="description">
-                <h3 class="title">${this.name}</h3>
-                <p class="price">${this.price}</p>
-            </div>
-            `;
-            placeToRender.append(block);
+        return new Promise(resolve => {
+            const placeToRender = document.querySelector('.goods');
 
+            if (placeToRender) {
+                const block = document.createElement('div');
+                block.classList.add('goods__item');
+                block.setAttribute('id', this.id);
+                block.innerHTML = `
+                <img src="img/no-image.jpg" alt="">
+                <div class="description">
+                    <h3 class="title">${this.name}</h3>
+                    <p class="price">${this.price}</p>
+                </div>
+                `;
+                placeToRender.append(block);
+                resolve(block);
+            }
+        }).then((block) => {
             const AddBtnBuy = new BtnBuy('Купить', 'btnBuy', this.id);
             block.append(AddBtnBuy.render());
-        }
+        });
 
     }
 }
@@ -189,10 +191,12 @@ class Button {
     }
 
     btnOnClick () {
-
-        let result = calculateAmount();
-        let divResult = document.querySelector('.res');
-        divResult.innerHTML = result;
+        new Promise(resolve => {
+            resolve(calculateAmount());
+        }).then(result => {
+            let divResult = document.querySelector('.res');
+            divResult.innerHTML = result;
+        });
     }
 
     render () {
@@ -212,21 +216,25 @@ class BtnMinus extends Button {
     }
 
     btnOnClick (id, input) {
-        if (input.value > 0) {
-            input.value--;
-        }
-        if (input.value === '0') {
-            let goodItem = document.getElementById(id);
-            if (goodItem) goodItem.remove();
-        }
-
-        this.cartList.forEach((obj) => {
-            if (id === ('0' + obj.id)) {
-                obj.count = input.value;
+        const subtract = new Promise(resolve => {
+            if (input.value > 0) {
+                input.value--;
             }
+            if (input.value === '0') {
+                let goodItem = document.getElementById(id);
+                if (goodItem) goodItem.remove();
+            }
+            resolve();
         });
-
-        return super.btnOnClick();
+        subtract.then(() => {
+            this.cartList.forEach((obj) => {
+                if (id === ('0' + obj.id)) {
+                    obj.count = input.value;
+                }
+            });
+        }).then(() => {
+            return super.btnOnClick();
+        })
     }
 
     render () {
@@ -240,13 +248,19 @@ class BtnPlus extends Button {
     }
 
     btnOnClick (id, input) {
-        input.value++;
-        this.cartList.forEach((obj) => {
-            if (id === ('0' + obj.id)) {
-                obj.count = input.value;
-            }
+        const sum = new Promise(resolve => {
+            input.value++;
+            resolve();
         });
-        return super.btnOnClick();
+        sum.then(() => {
+            this.cartList.forEach((obj) => {
+                if (id === ('0' + obj.id)) {
+                    obj.count = input.value;
+                }
+            });
+        }).then(() => {
+            return super.btnOnClick();
+        })
     }
 
     render () {
@@ -280,23 +294,14 @@ class BtnDelete extends Button {
 class BtnBuy extends Button {
 
     constructor(text, classBtn, id) {
-        super(text, classBtn);
-        this.id = id;
+        super(text, classBtn, id);
     }
 
-    btnOnClick (id) {
-        let good = document.getElementById(`${id}`);
-        let name = good.querySelector('.title');
-        name = name.innerHTML;
-        let price = good.querySelector('.price');
-        price = price.innerHTML;
-        let count = '1';
-        let cartItem = { id, name, price, count };
-
+    add (cartItem) {
         if (this.cartList.length) {
             let res = [];
             this.cartList.forEach((obj) => {
-                if (id === obj.id) {
+                if (this.id === obj.id) {
                     obj.count++;
                     res.push(true);
                 } else res.push(false);
@@ -308,17 +313,24 @@ class BtnBuy extends Button {
         }
     }
 
+    btnOnClick (id) {
+        return new Promise(resolve => {
+            let good = document.getElementById(`${id}`);
+            let name = good.querySelector('.title');
+            name = name.innerHTML;
+            let price = good.querySelector('.price');
+            price = price.innerHTML;
+            let count = '1';
+            let cartItem = { id, name, price, count };
+            resolve(cartItem);
+        }).then(cartItem => this.add(cartItem));
+    }
+
     render () {
         return super.render();
     }
 }
 new List();
-
-
-
-
-
-
 
 class BlockResult {
     constructor() {
@@ -326,16 +338,21 @@ class BlockResult {
     }
 
     render () {
-        const blockCart = document.querySelector('.modal_content.cart');
-        let result = calculateAmount();
-        let divResult = document.createElement('div');
-        divResult.classList.add('resultAmount');
-        divResult.innerHTML = `<p>Итого</p><p class="res">${result}</p>`;
-        blockCart.append(divResult);
+        return new Promise(resolve => {
+            let result = calculateAmount();
+            resolve(result);
+        }).then(result => {
+            const blockCart = document.querySelector('.modal_content.cart');
+            let divResult = document.createElement('div');
+            divResult.classList.add('resultAmount');
+            divResult.innerHTML = `<p>Итого</p><p class="res">${result}</p>`;
+            blockCart.append(divResult);
+        });
     }
 }
 
 const calculateAmount = () => {
+
     const blockCart = document.querySelector('.modal_content.cart');
     const placeToRender = blockCart.querySelectorAll('.cart__item');
     let result = 0;
