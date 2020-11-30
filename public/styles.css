@@ -240,3 +240,47 @@ li>a {
 .cart__item__price {
     margin-top: 5px;
 }
+
+/**** Registration *****/
+h2 {
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 35px;
+    width: 250px;
+    margin: 130px auto 20px;
+    text-align: center;
+    color: #13989D;
+}
+
+.alert {
+    display: block;
+    text-align: center;
+    color: red;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.form {
+    width: 250px;
+    background-color: #edeff2;
+    border-radius: 4px;
+    padding: 30px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.form>* {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.form>input {
+    height: 30px;
+}
+
