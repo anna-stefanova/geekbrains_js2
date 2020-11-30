@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="96214617-a95c-4373-8e1a-db216da2abb4" name="Default Changelist" comment="" />
+    <list default="true" id="96214617-a95c-4373-8e1a-db216da2abb4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/BlockResult.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/BtnBuy.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/BtnDelete.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/BtnMinus.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/BtnPlus.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Button.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Cart.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CartItem.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GoodItem.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/List.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/RegForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/globals.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.dev.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/registration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/.babelrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,8 +38,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -53,13 +77,22 @@
     <property name="settings.editor.selected.configurable" value="settings.nodejs" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/public/js" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/dist" />
+      <recent name="$PROJECT_DIR$/public/scripts" />
+    </key>
+  </component>
   <component name="RunManager">
-    <configuration name="scripts.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/public/scripts.js" working-dir="$PROJECT_DIR$/public">
+    <configuration name="index.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/index.js" working-dir="$PROJECT_DIR$/public">
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Node.js.scripts.js" />
+        <item itemvalue="Node.js.index.js" />
       </list>
     </recent_temporary>
   </component>
@@ -80,6 +113,11 @@
       <workItem from="1605542377690" duration="3337000" />
       <workItem from="1605596892946" duration="39968000" />
       <workItem from="1605976233757" duration="27439000" />
+      <workItem from="1606330140489" duration="8724000" />
+      <workItem from="1606390944861" duration="42000" />
+      <workItem from="1606410069257" duration="702000" />
+      <workItem from="1606661816086" duration="19234000" />
+      <workItem from="1606747474745" duration="3488000" />
     </task>
     <servers />
   </component>
@@ -87,10 +125,14 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1094" y="298" width="424" height="520" key="FileChooserDialogImpl" timestamp="1605612201146">
+    <state x="1248" y="299" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1606750137632">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="1094" y="298" width="424" height="520" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1605612201146" />
+    <state x="1248" y="299" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1606750137632" />
+    <state x="1094" y="298" width="424" height="520" key="FileChooserDialogImpl" timestamp="1606413442371">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="1094" y="298" width="424" height="520" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1606413442371" />
     <state width="1215" height="338" key="GridCell.Tab.0.bottom" timestamp="1605740542578">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
