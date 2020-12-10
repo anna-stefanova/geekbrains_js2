@@ -5,7 +5,7 @@ module.exports = merge(base, {
     devServer: {
         publicPath: './js',
         contentBase: './public',
-        port: 8080,
+        port: 3000,
         host: 'localhost',
         hot: true,
     }

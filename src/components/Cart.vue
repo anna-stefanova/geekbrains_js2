@@ -3,18 +3,65 @@
     <div :class="[$style.modal_body_cart]">
       <div :class="[$style.modal_content_cart]">
         <div :class="[$style.headerCart]">
-          <p :class="[$style.close]">x</p>
+          <p :class="[$style.close]" @click="onCloseClick">x</p>
           <h2>Корзина</h2>
         </div>
-        <div :class="[$style.contentCart]"></div>
+
+          <CartItem
+              v-for="id in getItemsInCart"
+              :key="id"
+              :id="id"
+              :count="getData[id].count"
+              v-if="getData[id].count > 0"
+          />
+
+
+
+        <div :class="[$style.resultAmount]">
+          <p>Итого</p><p :class="[$style.res]">{{ getTotalInCart }}</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import CartItem from './CartItem.vue';
+import {mapGetters, mapActions} from 'vuex';
+
 export default {
-name: "Cart"
+  name: "Cart",
+
+  props: {
+    id: String,
+    count: Number,
+
+  },
+
+  components: {
+    CartItem,
+  },
+
+  computed: {
+    ...mapGetters('goods', [
+      'getData',
+      'getItemsInCart',
+        'getTotalInCart'
+
+    ]),
+
+  },
+  methods: {
+    ...mapActions('goods', [
+      'changeStatusCart',
+        'minusCount'
+    ]),
+    onCloseClick () {
+      this.changeStatusCart();
+    },
+
+  }
+
 }
 </script>
 
@@ -28,8 +75,7 @@ name: "Cart"
       background-color: rgba(0, 0, 0, 0.7);
       left: 0;
       top: 0;
-      opacity: 0;
-      visibility: hidden;
+      opacity: 1;
       transition: all 0.8s ease 0s;
     }
     .modal_cart.open {
@@ -76,56 +122,15 @@ name: "Cart"
       cursor: pointer;
     }
 
-    .cart__item {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
+  .resultAmount {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 45px 45px;
+    border-top: 1px solid black;
+  }
 
-    }
-
-    .cart__item__description {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .resultAmount {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      margin: 10px 45px 45px;
-      border-top: 1px solid black;
-    }
-
-    .resultAmount p {
-      margin-top: 10px;
-    }
-
-    .cart__item {
-      margin: 10px 45px 10px 45px;
-    }
-
-    .amountGood {
-      height: 20px;
-    }
-
-    .minus, .plus, .delete {
-
-      margin-top: 1px;
-      background-color: #9D1813;
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 18px;
-      height: 25px;
-      width: 25px;
-      outline: none;
-      box-sizing: border-box;
-      border-top: 1px solid #99a8bf;
-      border-left: 1px dotted #99a8bf;
-      border-bottom: 1px solid #99a8bf;
-      cursor: pointer;
-    }
-
-    .cart__item__price {
-      margin-top: 5px;
-    }
+  .resultAmount p {
+    margin-top: 10px;
+  }
 </style>

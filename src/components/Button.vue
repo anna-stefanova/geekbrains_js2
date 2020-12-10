@@ -1,10 +1,17 @@
 <template>
-  <button :class="[$style.btnBuy]">Купить</button>
+  <button :class="[$style.btnBuy]" @click="onBtnClicked">
+    <slot></slot>
+  </button>
 </template>
 
 <script>
 export default {
-name: "Button"
+name: "Button",
+  methods: {
+    onBtnClicked () {
+      this.$emit('mySuperEvent');
+    }
+  }
 }
 </script>
 
