@@ -21,7 +21,7 @@ const actions = {
             return;
         }
 
-        return fetch(`/database/page${page}.json`, {
+        return fetch(`/itemslist/${page}`, {
             method: 'GET'
         })
         .then(res => {
@@ -46,8 +46,8 @@ const actions = {
     calcResult({ commit }) {
         commit('calcResult')
     },
-    /*addItem({ state, commit }, data) {
-        fetch('database', {
+    addItem({ state, commit }, data) {
+        fetch('/itemslist', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -57,7 +57,7 @@ const actions = {
             .then(res => {
                 console.log(res)
             });
-    },*/
+    },
 
     changeStatusCart({ commit }) {
         commit('changeStatusCart');

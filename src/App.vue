@@ -21,6 +21,8 @@
         <List></List>
       </div>
     </main>
+
+    <Form />
     <footer>
       <div :class="[$style.container]">
         Footer
@@ -35,6 +37,8 @@
 <script>
 import List from "./components/List.vue";
 import Cart from "./components/Cart.vue";
+import Form from "./components/Form.vue";
+
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -43,6 +47,7 @@ export default {
   components: {
     Cart,
     List,
+    Form
   },
 
   methods: {
