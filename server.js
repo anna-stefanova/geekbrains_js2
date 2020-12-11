@@ -30,9 +30,13 @@ const bodyParser = require('body-parser')
 app.use(express.static('./public'));
 app.use(bodyParser.json())
 
-app.listen(3000, () => {
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
     console.log('Server started!');
 })
+
+
 
 app.get('/itemslist/:page', (req, res) => {
     const page = req.params.page;
