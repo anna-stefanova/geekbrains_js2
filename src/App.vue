@@ -1,0 +1,120 @@
+<template>
+  <div>
+    <header>
+      <div :class="[$style.container]">
+        <div :class="[$style.logo]">
+          <a href="index.html" :class="[$style.logo__item]">Brand</a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#">Регистрация</a></li>
+            <li><a href="#">Корзина</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main :class="[$style.main_content]">
+      <div :class="[$style.container]">
+        <List></List>
+      </div>
+    </main>
+    <footer>
+      <div :class="[$style.container]">
+        Footer
+      </div>
+    </footer>
+
+    <Cart></Cart>
+  </div>
+</template>
+
+
+<script>
+import List from "./List.vue";
+import Cart from "./Cart.vue";
+
+
+export default {
+  name: "App",
+  components: {
+
+    Cart,
+    List,
+  },
+
+
+}
+</script>
+
+<style module lang="css">
+
+/* Main Page*/
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+  }
+
+  body>.main_content {
+    flex-grow: 1;
+  }
+  header, footer {
+    flex: 0 0 auto;
+    height: 100px;
+    background-color: #13989D;
+  }
+
+  .container {
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  header>.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  ul {
+    padding-top: 15px;
+  }
+
+  header>.container>nav li {
+    display: inline-block;
+    margin: 0 20px;
+  }
+
+  li>a {
+    text-decoration: none;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+
+  .logo {
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+
+  .logo__item {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 50px;
+    color: white;
+    opacity: 1;
+  }
+
+
+</style>
