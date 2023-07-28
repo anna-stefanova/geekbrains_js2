@@ -8,40 +8,62 @@
         <nav>
           <ul>
             <li><a href="#">Регистрация</a></li>
-            <li><a href="#">Корзина</a></li>
+            <li><a href="#" @click="onCartClick">Корзина</a></li>
+            <Cart
+            v-if="getStatusCart"></Cart>
           </ul>
         </nav>
       </div>
     </header>
+
     <main :class="[$style.main_content]">
       <div :class="[$style.container]">
         <List></List>
       </div>
     </main>
+
+    <Form />
     <footer>
       <div :class="[$style.container]">
         Footer
       </div>
     </footer>
 
-    <Cart></Cart>
+
   </div>
 </template>
 
 
 <script>
-import List from "./List.vue";
-import Cart from "./Cart.vue";
+import List from "./components/List.vue";
+import Cart from "./components/Cart.vue";
+import Form from "./components/Form.vue";
 
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: "App",
-  components: {
 
+  components: {
     Cart,
     List,
+    Form
   },
 
+  methods: {
+    ...mapActions('goods', [
+       'changeStatusCart',
+    ]),
+
+    onCartClick () {
+      this.changeStatusCart();
+    }
+  },
+  computed: {
+    ...mapGetters('goods', [
+        'getStatusCart'
+    ]),
+  },
 
 }
 </script>

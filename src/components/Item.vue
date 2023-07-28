@@ -2,23 +2,41 @@
   <div :class="[$style.goods__item]">
     <img src="img/no-image.jpg" alt="">
     <div :class="[$style.description]">
-      <h3 :class="[$style.title]"> {{ name }}</h3>
-      <p :class="[$style.price]">{{ price }}</p>
+      <h3 :class="[$style.title]"> {{ currentItem.name }}</h3>
+      <p :class="[$style.price]">{{ currentItem.price }}</p>
     </div>
-    <Button></Button>
+    <Button @mySuperEvent="onBuyClick">Купить</Button>
   </div>
 </template>
 
 <script>
 import Button from "./Button.vue";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
 name: "Item",
   components: {Button},
   props: {
     id: String,
-    name: String,
-    price: Number,
+  },
+  computed: {
+    ...mapGetters('goods', [
+        "getData",
+        "getTotalInCart"
+    ]),
+    currentItem() {
+      return this.getData[this.id] || {}
+    }
+  },
+  methods: {
+    ...mapActions('goods', [
+        "addInCart",
+        "calcResult"
+    ]),
+    onBuyClick() {
+      this.addInCart(this.id);
+      this.calcResult();
+    }
   }
 }
 </script>
